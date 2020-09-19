@@ -47,10 +47,11 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     private double longDiff, latDiff, size = 50;
     private MediaPlayer mediaPlayer1, mediaPlayer2, mediaPlayer3, mediaPlayer4;
     private Bitmap bitmap;
-    private int r=0, g=0, b=0;
+    private int r = 0, g = 0, b = 0;
 
     /**
      * create MOOVZ activity
+     *
      * @param savedInstanceState
      */
     @Override
@@ -104,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     /**
      * check GPS permissions, config and get location
      */
-    private void setGPS(){
+    private void setGPS() {
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -156,7 +157,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     /**
      * updates rgb values for circle color
      */
-    private void updateRGBValues(){
+    private void updateRGBValues() {
         if (r < 250)
             r += 5;
         else {
@@ -187,10 +188,11 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
     /**
      * set one song to media player
+     *
      * @param song song id
      * @return media player confid to specific song
      */
-    private MediaPlayer setSong(int song){
+    private MediaPlayer setSong(int song) {
         MediaPlayer mp = MediaPlayer.create(getApplicationContext(), song);
         mp.start();
         mp.setVolume(0f, 0f);
@@ -199,6 +201,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
     /**
      * function which updates location, media players and state
+     *
      * @param location the new location
      */
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -241,8 +244,9 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
     /**
      * changes media player settings according to location
-     * @param lon longitude
-     * @param lat latitude
+     *
+     * @param lon   longitude
+     * @param lat   latitude
      * @param media media player
      */
     @RequiresApi(api = Build.VERSION_CODES.M)
