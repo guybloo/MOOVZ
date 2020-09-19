@@ -43,11 +43,11 @@ import java.util.TimerTask;
 public class MainActivity extends AppCompatActivity implements LocationListener {
 
     private Location location, base;
-    private float distanceFactor, distance, speed;
-    private double longDiff, latDiff, size;
+    private float distanceFactor = 10, distance = 0, speed;
+    private double longDiff, latDiff, size = 50;
     private MediaPlayer mediaPlayer1, mediaPlayer2, mediaPlayer3, mediaPlayer4;
     private Bitmap bitmap;
-    private int r, g, b;
+    private int r=0, g=0, b=0;
 
     /**
      * create MOOVZ activity
@@ -58,13 +58,10 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        distanceFactor = 10;
-        distance = 0;
-        size = 50;
-
         setGPS();
         initSongs();
 
+        // buttons config
         ((Button) findViewById(R.id.setBase)).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (location != null && location.getAccuracy() <= 20) {
@@ -102,13 +99,11 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 Toast.makeText(getApplicationContext(), "Size changed!", Toast.LENGTH_SHORT).show();
             }
         });
-
-        r = 0;
-        g = 0;
-        b = 0;
-
     }
 
+    /**
+     * check GPS permissions, config and get location
+     */
     private void setGPS(){
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
@@ -121,6 +116,9 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this, Looper.getMainLooper());
     }
 
+    /**
+     * draw color circle in the specific position
+     */
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void drawPosition() {
 
@@ -155,6 +153,9 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         imageView.setImageBitmap(bitmap);
     }
 
+    /**
+     * updates rgb values for circle color
+     */
     private void updateRGBValues(){
         if (r < 250)
             r += 5;
@@ -173,6 +174,10 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         }
     }
 
+
+    /**
+     * config all songs in media players
+     */
     private void initSongs() {
         mediaPlayer1 = setSong(R.raw.song1);
         mediaPlayer2 = setSong(R.raw.song2);
@@ -180,6 +185,11 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         mediaPlayer4 = setSong(R.raw.song4);
     }
 
+    /**
+     * set one song to media player
+     * @param song song id
+     * @return media player confid to specific song
+     */
     private MediaPlayer setSong(int song){
         MediaPlayer mp = MediaPlayer.create(getApplicationContext(), song);
         mp.start();
@@ -187,6 +197,10 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         return mp;
     }
 
+    /**
+     * function which updates location, media players and state
+     * @param location the new location
+     */
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onLocationChanged(Location location) {
@@ -225,6 +239,12 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         drawPosition();
     }
 
+    /**
+     * changes media player settings according to location
+     * @param lon longitude
+     * @param lat latitude
+     * @param media media player
+     */
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void setSettings(int lon, int lat, MediaPlayer media) {
         float max = distanceFactor * 3;
@@ -268,6 +288,9 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         super.onPause();
     }
 
+    /**
+     * on app destroy, stop players
+     */
     @Override
     protected void onDestroy() {
         super.onDestroy();
