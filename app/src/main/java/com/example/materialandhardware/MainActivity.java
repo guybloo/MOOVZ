@@ -62,7 +62,13 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         setGPS();
         initSongs();
 
-        // buttons config
+        setButtons();
+    }
+
+    /**
+     * config buttons actions
+     */
+    private void setButtons() {
         ((Button) findViewById(R.id.setBase)).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (location != null && location.getAccuracy() <= 20) {
